@@ -1,0 +1,50 @@
+name: "Plasmic action"
+description: "Performs actions in Plasmic projects"
+author: "Plasmic <ops@plasmic.app>"
+inputs:
+  run:
+    description: "Action to perform ('init', 'sync', 'build')"
+    required: true
+  github_token:
+    description: "GitHub token, used to push back to repository"
+    required: false
+  project_id:
+    description: "Plasmic project ID"
+    required: false
+  project_api_token:
+    description: "Plasmic project API token"
+    required: false
+  platform:
+    description: "Framework ('nextjs', 'gatsby', 'react')"
+    required: false
+  language:
+    description: "Language ('js', 'ts')"
+    required: false
+  scheme:
+    description: "Scheme ('codegen', 'loader')"
+    required: false
+  branch:
+    description: "Branch to use"
+    required: false
+  title:
+    description: "Commit title"
+    required: false
+  description:
+    description: "Commit description"
+    required: false
+  directory:
+    description: "Working directory, relative to repository root"
+    required: false
+  sync_action:
+    description: "Sync action to perform ('commit', 'pr')"
+    required: false
+outputs:
+  synced:
+    description: "True if project was synced"
+  new_branch:
+    description: "New branch name (if a new branch was created)"
+  publish_dir:
+    description: "Build/dist directory to publish (if project was built)"
+runs:
+  using: "node12"
+  main: "dist/index.js"
