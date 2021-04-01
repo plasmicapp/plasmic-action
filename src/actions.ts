@@ -100,7 +100,7 @@ export class PlasmicAction {
       this.opts
     );
     await exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
-    await exec(`mv * .* ../`, {
+    await exec(`shopt -s dotglob && mv * ../`, {
       ...this.opts,
       cwd: path.join(this.opts.cwd, relTmpDir),
     });
