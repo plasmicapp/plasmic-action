@@ -76,7 +76,7 @@ class PlasmicAction {
             util_1.assertNoSingleQuotes(this.args.projectId);
             util_1.assertNoSingleQuotes(this.args.projectApiToken);
             yield exec_1.exec(`git checkout '${this.args.branch}'`, this.opts);
-            const relTmpDir = ".tmp-cpa";
+            const relTmpDir = "tmp-cpa";
             yield exec_1.exec(`npx create-plasmic-app --platform '${this.args.platform}' --scheme '${this.args.scheme}' ${this.args.language === "ts" ? "--typescript" : ""} --projectId '${this.args.projectId}' --projectApiToken '${this.args.projectApiToken}' '${relTmpDir}'`, this.opts);
             yield exec_1.exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
             yield exec_1.exec(`mv * .* ../`, Object.assign(Object.assign({}, this.opts), { cwd: path_1.default.join(this.opts.cwd, relTmpDir) }));

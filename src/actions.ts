@@ -90,7 +90,7 @@ export class PlasmicAction {
 
     await exec(`git checkout '${this.args.branch}'`, this.opts);
 
-    const relTmpDir = ".tmp-cpa";
+    const relTmpDir = "tmp-cpa";
     await exec(
       `npx create-plasmic-app --platform '${this.args.platform}' --scheme '${
         this.args.scheme
