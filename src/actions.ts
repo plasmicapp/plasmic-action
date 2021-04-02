@@ -45,6 +45,7 @@ export class PlasmicAction {
       cwd: path.join(".", args.directory || "."),
       onOutput: (chunk: string) => console.log(chunk.trim()),
       echo: true,
+      shell: "bash",
     };
 
     this.remote = args.githubToken
@@ -100,7 +101,7 @@ export class PlasmicAction {
       this.opts
     );
     await exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
-    await exec(`bash -c "shopt -s dotglob && mv * ../"`, {
+    await exec(`shopt -s dotglob && mv * ../`, {
       ...this.opts,
       cwd: path.join(this.opts.cwd, relTmpDir),
     });

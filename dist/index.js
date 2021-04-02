@@ -34,6 +34,7 @@ class PlasmicAction {
             cwd: path_1.default.join(".", args.directory || "."),
             onOutput: (chunk) => console.log(chunk.trim()),
             echo: true,
+            shell: 'bash',
         };
         this.remote = args.githubToken
             ? `https://x-access-token:${args.githubToken}@github.com/${process.env["GITHUB_REPOSITORY"]}.git`
@@ -79,7 +80,7 @@ class PlasmicAction {
             const relTmpDir = "tmp-cpa";
             yield exec_1.exec(`npx create-plasmic-app --platform '${this.args.platform}' --scheme '${this.args.scheme}' ${this.args.language === "ts" ? "--typescript" : ""} --projectId '${this.args.projectId}' --projectApiToken '${this.args.projectApiToken}' '${relTmpDir}'`, this.opts);
             yield exec_1.exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
-            yield exec_1.exec(`bash -c "shopt -s dotglob && mv * ../"`, Object.assign(Object.assign({}, this.opts), { cwd: path_1.default.join(this.opts.cwd, relTmpDir) }));
+            yield exec_1.exec(`shopt -s dotglob && mv * ../`, Object.assign(Object.assign({}, this.opts), { cwd: path_1.default.join(this.opts.cwd, relTmpDir) }));
             yield exec_1.exec(`rm -rf '${relTmpDir}'`, this.opts);
             yield this.commit(this.args.branch);
             return true;
