@@ -159,20 +159,32 @@ export class PlasmicAction {
     await exec(`git checkout '${this.args.branch}'`, this.opts);
     const pm = mkPackageManagerCmds(this.opts.cwd);
     await exec(`${pm.install}`, this.opts);
+    let dir: string;
     switch (this.args.platform) {
       case "nextjs":
         await exec(`${pm.cmd} next build`, this.opts);
         await exec(`${pm.cmd} next export`, this.opts);
-        return "out";
+        dir = "out";
+        break;
       case "gatsby":
         await exec(`${pm.cmd} gatsby build`, this.opts);
-        return "public";
+        dir = "public";
+        break;
       case "react":
         await exec(`${pm.run} build`, this.opts);
-        return "build/static";
+        dir = "build/static";
+        break;
       default:
         throw new Error(`Unknown platform '${this.args.platform}'`);
     }
+
+    // A .nojekyll file is required to bypass Jekyll processing and publish
+    // files and directories that start with underscores, e.g. _next.
+    // https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/
+    const nojekyllPath = path.join(dir, ".nojekyll");
+    await exec(`touch ${nojekyllPath}`, this.opts);
+
+    return dir;
   }
 
   /**
