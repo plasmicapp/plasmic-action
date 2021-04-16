@@ -17,7 +17,7 @@ export type SyncAction = "commit" | "pr" | "";
 const gitUserName = "Plasmic Bot";
 const gitUserEmail = "ops+git@plasmic.app";
 
-type PlasmicActionOptions = {
+export type PlasmicActionOptions = {
   run: RunAction;
 
   branch: string;

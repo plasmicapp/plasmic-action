@@ -24,6 +24,8 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@sentry/node": "^6.2.5",
+    "@sentry/tracing": "^6.2.5",
     "nanoid": "^3.1.22"
   },
   "devDependencies": {

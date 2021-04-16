@@ -7,11 +7,12 @@ import {
   RunAction,
   PlasmicAction,
 } from "./actions";
+import { initSentry, captureException } from "./sentry";
 import { setOutputs } from "./util";
 
 async function run(): Promise<void> {
   try {
-    const action = new PlasmicAction({
+    const options = {
       run: core.getInput("run") as RunAction,
       githubToken: core.getInput("github_token"),
       projectId: core.getInput("project_id"),
@@ -24,11 +25,15 @@ async function run(): Promise<void> {
       syncAction: core.getInput("sync_action") as SyncAction,
       title: core.getInput("title"),
       description: core.getInput("description"),
-    });
+    };
 
+    initSentry(options);
+
+    const action = new PlasmicAction(options);
     const outputs = await action.run();
     setOutputs(outputs);
   } catch (error) {
+    captureException(error);
     core.setFailed(error.message || error);
   }
 }
