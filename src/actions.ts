@@ -95,9 +95,11 @@ export class PlasmicAction {
     await exec(
       `npx create-plasmic-app --platform '${this.args.platform}' --scheme '${
         this.args.scheme
-      }' ${this.args.language === "ts" ? "--typescript" : ""} --projectId '${
-        this.args.projectId
-      }' --projectApiToken '${this.args.projectApiToken}' '${relTmpDir}'`,
+      }' ${
+        this.args.language === "ts" ? "--typescript=true" : "--typescript=false"
+      } --projectId '${this.args.projectId}' --projectApiToken '${
+        this.args.projectApiToken
+      }' '${relTmpDir}'`,
       this.opts
     );
     await exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
