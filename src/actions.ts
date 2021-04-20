@@ -7,6 +7,7 @@ import {
   mkPrBranchName,
   Outputs,
 } from "./util";
+import { create } from "create-plasmic-app";
 
 export type RunAction = "init" | "sync" | "build";
 export type Platform = "nextjs" | "gatsby" | "react" | "";
@@ -89,19 +90,21 @@ export class PlasmicAction {
     assertNoSingleQuotes(this.args.projectId);
     assertNoSingleQuotes(this.args.projectApiToken);
 
+    if (this.args.platform === "" || this.args.scheme === "") {
+      throw new Error("Platform and scheme must be specified.");
+    }
+
     await exec(`git checkout '${this.args.branch}'`, this.opts);
 
     const relTmpDir = "tmp-cpa";
-    await exec(
-      `npx create-plasmic-app --platform '${this.args.platform}' --scheme '${
-        this.args.scheme
-      }' ${
-        this.args.language === "ts" ? "--typescript=true" : "--typescript=false"
-      } --projectId '${this.args.projectId}' --projectApiToken '${
-        this.args.projectApiToken
-      }' '${relTmpDir}'`,
-      this.opts
-    );
+    await create({
+      resolvedProjectPath: path.resolve(this.opts.cwd, relTmpDir),
+      projectId: this.args.projectId,
+      projectApiToken: this.args.projectApiToken,
+      platform: this.args.platform,
+      scheme: this.args.scheme,
+      useTypescript: this.args.language === "ts",
+    });
     await exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
     await exec(`shopt -s dotglob && mv * ../`, {
       ...this.opts,

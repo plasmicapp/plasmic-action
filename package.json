@@ -12,7 +12,12 @@
     "all": "npm run build && npm run format && npm run package",
     "add-dist": "git add dist"
   },
-  "pre-commit": ["format-check", "build", "package", "add-dist"],
+  "pre-commit": [
+    "format-check",
+    "build",
+    "package",
+    "add-dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plasmicapp/plasmic-action.git"
@@ -28,6 +33,7 @@
     "@actions/core": "^1.2.6",
     "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
+    "create-plasmic-app": "^0.0.14",
     "nanoid": "^3.1.22"
   },
   "devDependencies": {
