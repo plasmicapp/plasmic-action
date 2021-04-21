@@ -370,10 +370,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-create-plasmic-app@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.14.tgz#76329916e66d542f1952694e1fdfe5f3b83aee22"
-  integrity sha512-GYIj/2F7Iz8GeBlUdn663hdWmnWReA9D1kND/A00+B2n2N3MCl/nrVscbhi2WV7hD3kibwGWuPncL4LHyJT+nA==
+create-plasmic-app@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.15.tgz#34c375f9d6ab50172d0fe9247497a1d70e76d7b8"
+  integrity sha512-w58JrNBYtzMOCdNIlFEj3JxqTUyYK2qFHb++AwqZc6W3QBstxbkULMz088IDzqG3MrLLej/tm+Op2Vc/LpUkeg==
   dependencies:
     "@sentry/node" "^6.2.2"
     chalk "^4.1.0"

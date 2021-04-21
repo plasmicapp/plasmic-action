@@ -33,7 +33,7 @@
     "@actions/core": "^1.2.6",
     "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
-    "create-plasmic-app": "^0.0.14",
+    "create-plasmic-app": "^0.0.15",
     "nanoid": "^3.1.22"
   },
   "devDependencies": {
