@@ -14,8 +14,7 @@
   },
   "pre-commit": [
     "format-check",
-    "build",
-    "package",
+    "all",
     "add-dist"
   ],
   "repository": {
