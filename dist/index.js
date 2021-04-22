@@ -141,8 +141,9 @@ class PlasmicAction {
             yield exec_1.exec(`git checkout '${this.args.branch}'`, this.opts);
             const pm = util_1.mkPackageManagerCmds(this.opts.cwd);
             yield exec_1.exec(`${pm.install}`, this.opts);
+            const platform = this.args.platform || this.detectPlatform();
             let dir;
-            switch (this.args.platform) {
+            switch (platform) {
                 case "nextjs":
                     yield exec_1.exec(`${pm.cmd} next build`, this.opts);
                     yield exec_1.exec(`${pm.cmd} next export`, this.opts);
@@ -157,7 +158,7 @@ class PlasmicAction {
                     dir = "build/static";
                     break;
                 default:
-                    throw new Error(`Unknown platform '${this.args.platform}'`);
+                    throw new Error(`Unknown platform '${platform}'`);
             }
             // A .nojekyll file is required to bypass Jekyll processing and publish
             // files and directories that start with underscores, e.g. _next.
@@ -166,6 +167,18 @@ class PlasmicAction {
             yield exec_1.exec(`touch ${nojekyllPath}`, this.opts);
             return dir;
         });
+    }
+    detectPlatform() {
+        const packageJson = fs_1.readFileSync(path_1.default.join(this.opts.cwd, "package.json"), "utf8");
+        const parsedPackageJson = JSON.parse(packageJson);
+        if (fs_1.existsSync(path_1.default.join(this.opts.cwd, "gatsby-config.js"))) {
+            return "gatsby";
+        }
+        if (parsedPackageJson.scripts.build === "next build" ||
+            "next" in parsedPackageJson.dependencies) {
+            return "nextjs";
+        }
+        return "react";
     }
     /**
      * Commits existing working directory and push to remote (setting branch
@@ -14901,6 +14914,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.overwriteIndex = exports.modifyDefaultGatsbyConfig = exports.writePlasmicLoaderJson = exports.writeDefaultNextjsConfig = exports.stripExtension = exports.deleteGlob = void 0;
 const fs_1 = __nccwpck_require__(5747);
+const fs = __importStar(__nccwpck_require__(9225));
 const glob_1 = __importDefault(__nccwpck_require__(1957));
 const lodash_1 = __importDefault(__nccwpck_require__(250));
 const readline = __importStar(__nccwpck_require__(1058));
@@ -14938,7 +14952,7 @@ exports.stripExtension = stripExtension;
 function writeDefaultNextjsConfig(projectDir, projectId) {
     return __awaiter(this, void 0, void 0, function* () {
         const nextjsConfigFile = path.join(projectDir, "next.config.js");
-        yield fs_1.promises.writeFile(nextjsConfigFile, `
+        yield fs.writeFile(nextjsConfigFile, `
 const plasmic = require('@plasmicapp/loader/next');
 const withPlasmic = plasmic({
   projects: ['${projectId}'] // An array of project ids.
@@ -14962,7 +14976,7 @@ function writePlasmicLoaderJson(projectDir, projectId, projectApiToken) {
                 },
             ],
         };
-        yield fs_1.promises.writeFile(plasmicLoaderJson, JSON.stringify(content));
+        yield fs.writeFile(plasmicLoaderJson, JSON.stringify(content));
     });
 }
 exports.writePlasmicLoaderJson = writePlasmicLoaderJson;
@@ -15005,7 +15019,7 @@ function modifyDefaultGatsbyConfig(projectDir, projectId) {
             }
             finally { if (e_1) throw e_1.error; }
         }
-        yield fs_1.promises.writeFile(gatsbyConfigFile, result);
+        yield fs.writeFile(gatsbyConfigFile, result);
     });
 }
 exports.modifyDefaultGatsbyConfig = modifyDefaultGatsbyConfig;
@@ -15032,7 +15046,7 @@ function overwriteIndex(projectPath, platform, scheme) {
                 : isGatsby && isLoader
                     ? ".cache/.plasmic/plasmic.json"
                     : undefined);
-        const configStr = yield fs_1.promises.readFile(path.join(projectPath, configPath));
+        const configStr = yield fs.readFile(path.join(projectPath, configPath));
         const config = JSON.parse(configStr.toString());
         const plasmicFiles = lodash_1.default.map(lodash_1.default.flatMap(config.projects, (p) => p.components), (c) => c.importSpec.modulePath);
         const isTypescript = ((_a = config === null || config === void 0 ? void 0 : config.code) === null || _a === void 0 ? void 0 : _a.lang) === "ts";
@@ -15065,7 +15079,7 @@ function overwriteIndex(projectPath, platform, scheme) {
         const content = isCra && homeFilePossibilities.length > 0
             ? generateHomePage(homeFilePossibilities[0], indexAbsPath)
             : generateWelcomePage(config, isCra);
-        yield fs_1.promises.writeFile(indexAbsPath, content);
+        yield fs.writeFile(indexAbsPath, content);
     });
 }
 exports.overwriteIndex = overwriteIndex;
@@ -44896,7 +44910,7 @@ module.exports = { urlAlphabet }
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse("{\"name\":\"create-plasmic-app\",\"version\":\"0.0.15\",\"description\":\"Create Plasmic-powered React apps\",\"main\":\"./dist/lib.js\",\"types\":\"./dist/lib.d.ts\",\"license\":\"MIT\",\"engines\":{\"node\":\"^12.13.0 || ^14.15.0 || >=15.0.0\"},\"bin\":{\"create-plasmic-app\":\"./dist/index.js\"},\"scripts\":{\"wtest\":\"jest --colors --watchAll\",\"test\":\"jest --colors\",\"test:debug\":\"node --inspect-brk node_modules/.bin/jest --runInBand --watch\",\"build\":\"eslint 'src/**' && tsc\",\"create-plasmic-app\":\"ts-node src/index.ts\",\"prepare\":\"yarn build\"},\"devDependencies\":{\"@types/findup-sync\":\"^2.0.2\",\"@types/glob\":\"^7.1.3\",\"@types/inquirer\":\"^7.3.1\",\"@types/jest\":\"^26.0.20\",\"@types/lodash\":\"^4.14.168\",\"@types/node\":\"^14.14.33\",\"@types/update-notifier\":\"^5.0.0\",\"@types/validate-npm-package-name\":\"^3.0.2\",\"@types/yargs\":\"^16.0.0\",\"@typescript-eslint/eslint-plugin\":\"^4.17.0\",\"@typescript-eslint/parser\":\"^4.17.0\",\"eslint\":\"^7.21.0\",\"jest\":\"^26.6.3\",\"jest-circus\":\"^26.6.3\",\"ts-jest\":\"^26.5.3\",\"ts-node\":\"^9.1.1\"},\"dependencies\":{\"@sentry/node\":\"^6.2.2\",\"chalk\":\"^4.1.0\",\"execa\":\"^5.0.0\",\"findup-sync\":\"^4.0.0\",\"glob\":\"^7.1.6\",\"inquirer\":\"^8.0.0\",\"lodash\":\"^4.17.21\",\"typescript\":\"^4.2.3\",\"upath\":\"^2.0.1\",\"update-notifier\":\"^5.1.0\",\"validate-npm-package-name\":\"^3.0.0\",\"yargs\":\"^16.2.0\"}}");
+module.exports = JSON.parse("{\"name\":\"create-plasmic-app\",\"version\":\"0.0.14\",\"description\":\"Create Plasmic-powered React apps\",\"main\":\"./dist/lib.js\",\"types\":\"./dist/lib.d.ts\",\"license\":\"MIT\",\"engines\":{\"node\":\"^12.13.0 || ^14.15.0 || >=15.0.0\"},\"bin\":{\"create-plasmic-app\":\"./dist/index.js\"},\"scripts\":{\"wtest\":\"jest --colors --watchAll\",\"test\":\"jest --colors\",\"test:debug\":\"node --inspect-brk node_modules/.bin/jest --runInBand --watch\",\"build\":\"eslint 'src/**' && tsc\",\"create-plasmic-app\":\"ts-node src/index.ts\"},\"prepublish\":\"yarn build\",\"devDependencies\":{\"@types/findup-sync\":\"^2.0.2\",\"@types/glob\":\"^7.1.3\",\"@types/inquirer\":\"^7.3.1\",\"@types/jest\":\"^26.0.20\",\"@types/lodash\":\"^4.14.168\",\"@types/node\":\"^14.14.33\",\"@types/update-notifier\":\"^5.0.0\",\"@types/validate-npm-package-name\":\"^3.0.2\",\"@types/yargs\":\"^16.0.0\",\"@typescript-eslint/eslint-plugin\":\"^4.17.0\",\"@typescript-eslint/parser\":\"^4.17.0\",\"eslint\":\"^7.21.0\",\"jest\":\"^26.6.3\",\"jest-circus\":\"^26.6.3\",\"ts-jest\":\"^26.5.3\",\"ts-node\":\"^9.1.1\"},\"dependencies\":{\"@sentry/node\":\"^6.2.2\",\"chalk\":\"^4.1.0\",\"execa\":\"^5.0.0\",\"findup-sync\":\"^4.0.0\",\"glob\":\"^7.1.6\",\"inquirer\":\"^8.0.0\",\"lodash\":\"^4.17.21\",\"typescript\":\"^4.2.3\",\"upath\":\"^2.0.1\",\"update-notifier\":\"^5.1.0\",\"validate-npm-package-name\":\"^3.0.0\",\"yargs\":\"^16.2.0\"}}");
 
 /***/ }),
 
@@ -44961,6 +44975,14 @@ module.exports = require("events");;
 
 "use strict";
 module.exports = require("fs");;
+
+/***/ }),
+
+/***/ 9225:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");;
 
 /***/ }),
 

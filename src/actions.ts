@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import path from "path";
 import { exec, ExecOptions } from "./exec";
 import {
@@ -164,8 +164,10 @@ export class PlasmicAction {
     await exec(`git checkout '${this.args.branch}'`, this.opts);
     const pm = mkPackageManagerCmds(this.opts.cwd);
     await exec(`${pm.install}`, this.opts);
+
+    const platform = this.args.platform || this.detectPlatform();
     let dir: string;
-    switch (this.args.platform) {
+    switch (platform) {
       case "nextjs":
         await exec(`${pm.cmd} next build`, this.opts);
         await exec(`${pm.cmd} next export`, this.opts);
@@ -180,7 +182,7 @@ export class PlasmicAction {
         dir = "build/static";
         break;
       default:
-        throw new Error(`Unknown platform '${this.args.platform}'`);
+        throw new Error(`Unknown platform '${platform}'`);
     }
 
     // A .nojekyll file is required to bypass Jekyll processing and publish
@@ -190,6 +192,27 @@ export class PlasmicAction {
     await exec(`touch ${nojekyllPath}`, this.opts);
 
     return dir;
+  }
+
+  detectPlatform(): Platform {
+    const packageJson = readFileSync(
+      path.join(this.opts.cwd, "package.json"),
+      "utf8"
+    );
+    const parsedPackageJson = JSON.parse(packageJson);
+
+    if (existsSync(path.join(this.opts.cwd, "gatsby-config.js"))) {
+      return "gatsby";
+    }
+
+    if (
+      parsedPackageJson.scripts.build === "next build" ||
+      "next" in parsedPackageJson.dependencies
+    ) {
+      return "nextjs";
+    }
+
+    return "react";
   }
 
   /**
