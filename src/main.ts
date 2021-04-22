@@ -25,6 +25,7 @@ async function run(): Promise<void> {
       syncAction: core.getInput("sync_action") as SyncAction,
       title: core.getInput("title"),
       description: core.getInput("description"),
+      skipIfPlasmic: !!core.getInput("skip_if_plasmic"),
     };
 
     initSentry(options);

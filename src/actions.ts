@@ -35,6 +35,8 @@ export type PlasmicActionOptions = {
 
   title: string;
   description: string;
+
+  skipIfPlasmic: boolean;
 };
 
 export class PlasmicAction {
@@ -44,8 +46,6 @@ export class PlasmicAction {
   constructor(private args: PlasmicActionOptions) {
     this.opts = {
       cwd: path.join(".", args.directory || "."),
-      onOutput: (chunk: string) => console.log(chunk.trim()),
-      echo: true,
       shell: "bash",
     };
 
@@ -162,6 +162,17 @@ export class PlasmicAction {
   async build(): Promise<string> {
     assertNoSingleQuotes(this.args.branch);
     await exec(`git checkout '${this.args.branch}'`, this.opts);
+    if (this.args.skipIfPlasmic) {
+      const { stdout: authorEmail } = await exec(
+        `git log -1 --pretty=format:'%ae'`,
+        this.opts
+      );
+      if (authorEmail.trim() === gitUserEmail) {
+        console.log("Skipping; last commit was made by Plasmic.");
+        return "";
+      }
+    }
+
     const pm = mkPackageManagerCmds(this.opts.cwd);
     await exec(`${pm.install}`, this.opts);
 

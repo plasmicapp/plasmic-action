@@ -33,8 +33,6 @@ class PlasmicAction {
         this.args = args;
         this.opts = {
             cwd: path_1.default.join(".", args.directory || "."),
-            onOutput: (chunk) => console.log(chunk.trim()),
-            echo: true,
             shell: "bash",
         };
         this.remote = args.githubToken
@@ -139,6 +137,13 @@ class PlasmicAction {
         return __awaiter(this, void 0, void 0, function* () {
             util_1.assertNoSingleQuotes(this.args.branch);
             yield exec_1.exec(`git checkout '${this.args.branch}'`, this.opts);
+            if (this.args.skipIfPlasmic) {
+                const { stdout: authorEmail } = yield exec_1.exec(`git log -1 --pretty=format:'%ae'`, this.opts);
+                if (authorEmail.trim() === gitUserEmail) {
+                    console.log("Skipping; last commit was made by Plasmic.");
+                    return "";
+                }
+            }
             const pm = util_1.mkPackageManagerCmds(this.opts.cwd);
             yield exec_1.exec(`${pm.install}`, this.opts);
             const platform = this.args.platform || this.detectPlatform();
@@ -240,7 +245,7 @@ const promiseExec = util_1.promisify(child_process_1.exec);
 const defaultTimeout = 10 * 60 * 1000;
 function exec(cmd, opts) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { input, onOutput, echo = false } = opts, nodeOpts = __rest(opts, ["input", "onOutput", "echo"]);
+        const { input } = opts, nodeOpts = __rest(opts, ["input"]);
         if (!nodeOpts.timeout) {
             nodeOpts.timeout = defaultTimeout;
         }
@@ -249,16 +254,15 @@ function exec(cmd, opts) {
         // to the directory for a few moments which causes "rm -rf {cwd}" to fail.
         nodeOpts.killSignal = "SIGKILL";
         const promise = promiseExec(cmd, nodeOpts);
-        if (onOutput && echo) {
-            onOutput(`$ ${cmd}\n`);
+        console.log(`$ ${cmd}`);
+        const onOutput = (chunk) => {
+            console.log(chunk.trim());
+        };
+        if (promise.child.stdout) {
+            promise.child.stdout.on("data", onOutput);
         }
-        if (onOutput) {
-            if (promise.child.stdout) {
-                promise.child.stdout.on("data", onOutput);
-            }
-            if (promise.child.stderr) {
-                promise.child.stderr.on("data", onOutput);
-            }
+        if (promise.child.stderr) {
+            promise.child.stderr.on("data", onOutput);
         }
         if (input && promise.child.stdin) {
             promise.child.stdin.write(input);
@@ -326,6 +330,7 @@ function run() {
                 syncAction: core.getInput("sync_action"),
                 title: core.getInput("title"),
                 description: core.getInput("description"),
+                skipIfPlasmic: !!core.getInput("skip_if_plasmic"),
             };
             sentry_1.initSentry(options);
             const action = new actions_1.PlasmicAction(options);

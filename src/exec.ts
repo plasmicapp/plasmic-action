@@ -12,14 +12,10 @@ export type ExecOptions = NodeExecOptions & {
   cwd: string;
   // This string is given to executed command as standard input.
   input?: string;
-  // Function to receive command output (both stdout and stderr).
-  onOutput?: (chunk: any) => void;
-  // Whether to echo "$ {cmd}" to `onOutput`.
-  echo?: boolean;
 };
 
 export async function exec(cmd: string, opts: ExecOptions) {
-  const { input, onOutput, echo = false, ...nodeOpts } = opts;
+  const { input, ...nodeOpts } = opts;
 
   if (!nodeOpts.timeout) {
     nodeOpts.timeout = defaultTimeout;
@@ -32,17 +28,15 @@ export async function exec(cmd: string, opts: ExecOptions) {
 
   const promise = promiseExec(cmd, nodeOpts);
 
-  if (onOutput && echo) {
-    onOutput(`$ ${cmd}\n`);
+  console.log(`$ ${cmd}`);
+  const onOutput = (chunk: string) => {
+    console.log(chunk.trim());
+  };
+  if (promise.child.stdout) {
+    promise.child.stdout.on("data", onOutput);
   }
-
-  if (onOutput) {
-    if (promise.child.stdout) {
-      promise.child.stdout.on("data", onOutput);
-    }
-    if (promise.child.stderr) {
-      promise.child.stderr.on("data", onOutput);
-    }
+  if (promise.child.stderr) {
+    promise.child.stderr.on("data", onOutput);
   }
 
   if (input && promise.child.stdin) {
