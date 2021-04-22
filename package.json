@@ -9,7 +9,7 @@
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "all": "npm run build && npm run format && npm run package",
+    "all": "yarn install && npm run build && npm run format && npm run package",
     "add-dist": "git add dist"
   },
   "pre-commit": [
