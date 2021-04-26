@@ -38,6 +38,9 @@ inputs:
   sync_action:
     description: "Sync action to perform ('commit', 'pr')"
     required: false
+  skip_if_plasmic:
+    description: "Skip build if last commit was authored by Plasmic"
+    required: false
 outputs:
   synced:
     description: "True if project was synced"
