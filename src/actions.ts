@@ -7,7 +7,7 @@ import {
   mkPrBranchName,
   Outputs,
 } from "./util";
-import { create } from "create-plasmic-app";
+import { create, setMetadata } from "create-plasmic-app";
 
 export type RunAction = "init" | "sync" | "build";
 export type Platform = "nextjs" | "gatsby" | "react" | "";
@@ -97,6 +97,9 @@ export class PlasmicAction {
     await exec(`git checkout '${this.args.branch}'`, this.opts);
 
     const relTmpDir = "tmp-cpa";
+    setMetadata({
+      source: "plasmic-action",
+    });
     await create({
       resolvedProjectPath: path.resolve(this.opts.cwd, relTmpDir),
       projectId: this.args.projectId,
