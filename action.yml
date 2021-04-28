@@ -50,4 +50,4 @@ outputs:
     description: "Build/dist directory to publish (if project was built)"
 runs:
   using: "node12"
-  main: "dist/index.js"
+  main: "lib/main.js"

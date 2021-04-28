@@ -8,9 +8,8 @@
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
-    "all": "yarn install && npm run build && npm run format && npm run package",
-    "add-dist": "git add dist"
+    "all": "yarn install && npm run build && npm run format ",
+    "add-dist": "git add lib"
   },
   "pre-commit": [
     "format-check",
@@ -32,7 +31,7 @@
     "@actions/core": "^1.2.6",
     "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
-    "create-plasmic-app": "^0.0.15",
+    "create-plasmic-app": "^0.0.19",
     "nanoid": "^3.1.22"
   },
   "devDependencies": {
