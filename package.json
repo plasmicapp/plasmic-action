@@ -8,7 +8,7 @@
     "build": "tsc",
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
-    "all": "yarn install && npm run build && npm run format ",
+    "all": "yarn install && npm run build && npm run format",
     "add-dist": "git add lib"
   },
   "pre-commit": [

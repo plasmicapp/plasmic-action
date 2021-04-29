@@ -109,6 +109,12 @@ export class PlasmicAction {
       useTypescript: this.args.language === "ts",
     });
     await exec(`rm -rf '${relTmpDir}/.git'`, this.opts);
+
+    // Gatsby build breaks if we move the project directory without deleting
+    // the cache. If that's fixed by Gatsby we can stop removing the cache
+    // in the next line.
+    await exec(`rm -rf '${relTmpDir}/.cache'`, this.opts);
+
     await exec(`shopt -s dotglob && mv * ../`, {
       ...this.opts,
       cwd: path.join(this.opts.cwd, relTmpDir),
