@@ -120,8 +120,7 @@ export class PlasmicAction {
       cwd: path.join(this.opts.cwd, relTmpDir),
     });
     await exec(`rm -rf '${relTmpDir}'`, this.opts);
-    await this.commit(this.args.branch);
-    return true;
+    return await this.commit(this.args.branch);
   }
 
   /**
@@ -158,8 +157,9 @@ export class PlasmicAction {
       `${pm.cmd} plasmic sync --projects '${this.args.projectId}:${this.args.projectApiToken}' --yes`,
       this.opts
     );
-    await this.commit(newBranch || this.args.branch);
-    return newBranch;
+    return (await this.commit(newBranch || this.args.branch))
+      ? newBranch
+      : undefined;
   }
 
   /**
@@ -239,7 +239,7 @@ export class PlasmicAction {
    * Commits existing working directory and push to remote (setting branch
    * upstream).
    */
-  async commit(branch: string): Promise<void> {
+  async commit(branch: string): Promise<boolean> {
     if (!this.remote) {
       throw new Error("No git remote to push");
     }
@@ -251,7 +251,18 @@ export class PlasmicAction {
     await exec(`git add -A .`, this.opts);
     await exec(`git config user.name '${gitUserName}'`, this.opts);
     await exec(`git config user.email '${gitUserEmail}'`, this.opts);
+
+    const { stdout: staged } = await exec(
+      `git status --untracked-files=no --porcelain`,
+      this.opts
+    );
+    if (!staged.trim()) {
+      console.log("Skipping commit; no changes.");
+      return false;
+    }
+
     await exec(`git commit -F -`, { ...this.opts, input: commitMessage });
     await exec(`git push -u '${this.remote}' '${branch}'`, this.opts);
+    return true;
   }
 }
