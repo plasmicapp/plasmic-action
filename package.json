@@ -29,6 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@actions/github": "^5.0.0",
     "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
     "create-plasmic-app": "^0.0.27",
