@@ -156,6 +156,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.12.11.tgz#c9a1f021917dcb5ccf0d4e453e399022981fc9ed"
   integrity sha512-np/lG3uARFybkoHokJUmf1QfEvRVCPbmQeUQpKow5cQ3xWrV9i3rUHodKDJPQfTVX61qKi+UdYk8kik84n7XOw==
 
+"@babel/helper-validator-identifier@^7.15.7":
+  version "7.15.7"
+  resolved "https://registry.yarnpkg.com/@babel/helper-validator-identifier/-/helper-validator-identifier-7.15.7.tgz#220df993bfe904a4a6b02ab4f3385a5ebf6e2389"
+  integrity sha512-K4JvCtQqad9OY2+yTU8w+E82ywk/fe+ELNlt1G8z3bVGlZfn/hOcQQsUhGhW/N+tb3fxK800wLtKOE/aM0m72w==
+
 "@babel/helper-validator-option@^7.12.17":
   version "7.12.17"
   resolved "https://registry.yarnpkg.com/@babel/helper-validator-option/-/helper-validator-option-7.12.17.tgz#d1fbf012e1a79b7eebbfdc6d270baaf8d9eb9831"
@@ -213,6 +218,14 @@
   integrity sha512-RawydLgxbOPDlTLJNtoIypwdmAy//uQIzlKt2+iBiJaRlVuI6QLUxVAyWGNfOzp8Yu4L4lLIacoCyTNtpb4wiA==
   dependencies:
     "@babel/helper-validator-identifier" "^7.12.11"
+    to-fast-properties "^2.0.0"
+
+"@babel/types@^7.12.1":
+  version "7.16.0"
+  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.16.0.tgz#db3b313804f96aadd0b776c4823e127ad67289ba"
+  integrity sha512-PJgg/k3SdLsGb3hhisFvtLOw5ts113klrpLuIPtCJIU+BB24fqq6lf8RWqKJEjzqXR9AEH1rIb5XTqwBHB+kQg==
+  dependencies:
+    "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
 "@dabh/diagnostics@^2.0.2":
@@ -331,14 +344,16 @@
   dependencies:
     "@octokit/openapi-types" "^9.1.1"
 
-"@plasmicapp/cli@^0.1.161":
-  version "0.1.163"
-  resolved "https://registry.yarnpkg.com/@plasmicapp/cli/-/cli-0.1.163.tgz#8b5903c410b24a15b596aa897d3330b72267e42c"
-  integrity sha512-zdMnbzcq9ecmF6YAIY9sFWnVzF/MWboPav8sumeqjFeXGc7FDNF3zwK+60kMlk94IyYL15NJW0Gbp16W5WWZeA==
+"@plasmicapp/cli@^0.1.166":
+  version "0.1.166"
+  resolved "https://registry.yarnpkg.com/@plasmicapp/cli/-/cli-0.1.166.tgz#be7c0a0e68c8d31ab175e0c10689b3bca0a558ab"
+  integrity sha512-pm/9vZtsW2UylGatPfRESKuRhlLpe5SQPiOHDtufHJfHOYmUJrNhuIEtI+IWzuxF118GlZVcY9Ofd52qpgAgxA==
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/generator" "^7.12.1"
-    "@plasmicapp/code-merger" "^0.0.31"
+    "@babel/parser" "^7.12.3"
+    "@babel/traverse" "^7.12.1"
+    "@plasmicapp/code-merger" "^0.0.33"
     "@sentry/node" "^5.19.2"
     "@types/socket.io-client" "^1.4.34"
     axios "^0.21.1"
@@ -366,15 +381,16 @@
     wrap-ansi "^7.0.0"
     yargs "^15.4.1"
 
-"@plasmicapp/code-merger@^0.0.31":
-  version "0.0.31"
-  resolved "https://registry.yarnpkg.com/@plasmicapp/code-merger/-/code-merger-0.0.31.tgz#fdbab02229458aff2139f72258c6af46723ffec1"
-  integrity sha512-0s+jHEkwFQ220hIG1p76kTTLL8Cr5QsEFuwnrt2Q+nQHDeLwL9Mt8w2Ro1mBKNNac9/hdqC0eVPzVLbWhxWf/g==
+"@plasmicapp/code-merger@^0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@plasmicapp/code-merger/-/code-merger-0.0.33.tgz#92d1f5b3dbe81b1a8b0e26a949d27d8619531e4c"
+  integrity sha512-FTO1MwoQ3s+Sh4Fqc8UJ0b1LZlv/0GidphucxvdDWB6zD98KhrTw3t38n8f4/cfw1SosTbd4uQ7Cn3z/P5Fc0Q==
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/generator" "^7.12.1"
     "@babel/parser" "^7.12.3"
     "@babel/traverse" "^7.12.1"
+    "@babel/types" "^7.12.1"
     "@types/babel__core" "^7.1.14"
     "@types/babel__generator" "^7.6.2"
     "@types/babel__parser" "^7.1.1"
@@ -1017,12 +1033,12 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-create-plasmic-app@^0.0.30:
-  version "0.0.30"
-  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.30.tgz#5127c606398aac553abb010cafbb9b48c6fdffda"
-  integrity sha512-xUs+Z+flNBZIq83Bk1BiWFX26QlHrnt5As0BVzmjO4YOQhly+pcPUcXUXkp1XD0p+7igq2W5Ca/HAQngvQhW2w==
+create-plasmic-app@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.31.tgz#8f73ed6f9db159f46695ffd72ff25798e280982a"
+  integrity sha512-n4dMergyVQRgXnHz09Fdhi9v8cS+WJUGdE83tt+bk3jCF0fILYZNC8s7uY07AnLwxEpCfv1ljNqpPM9u1wfrdg==
   dependencies:
-    "@plasmicapp/cli" "^0.1.161"
+    "@plasmicapp/cli" "^0.1.166"
     "@sentry/node" "^6.2.2"
     chalk "^4.1.0"
     execa "^5.0.0"
