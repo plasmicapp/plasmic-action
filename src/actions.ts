@@ -189,8 +189,17 @@ export class PlasmicAction {
     let dir: string;
     switch (platform) {
       case "nextjs":
-        await exec(`${pm.cmd} next build`, this.opts);
-        await exec(`${pm.cmd} next export`, this.opts);
+        // Set STATIC_EXPORT env variable so that getStaticPaths
+        // knows to use `fallback: false`
+        const nextOpts = {
+          ...this.opts,
+          env: {
+            ...this.opts.env,
+            STATIC_EXPORT: "true",
+          },
+        };
+        await exec(`${pm.cmd} next build`, nextOpts);
+        await exec(`${pm.cmd} next export`, nextOpts);
         dir = "out";
         break;
       case "gatsby":
