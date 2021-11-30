@@ -1033,10 +1033,10 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-create-plasmic-app@^0.0.37:
-  version "0.0.37"
-  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.37.tgz#9c6a586d63af255a370a5bb4c19a59a4cc55456a"
-  integrity sha512-l/BeJ9CW69SsySbHZaVtrEMbiKjYJ7ZLda7ZbjDsu0Uyq5pszN3TFWbBmnnsHtHBXdbIQyZE4qFJ2RH3uUnk7A==
+create-plasmic-app@^0.0.38:
+  version "0.0.38"
+  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.38.tgz#a0a99503dbe98ab425fab9c05e2decaa884f501e"
+  integrity sha512-/68/WcAu7N8IsHNMsYciZckB/hrGaPfneSYf/YVjY+WPTKzf1Q6LjLeBQou45oevSSgIgw6szVqdeVFemkPkHA==
   dependencies:
     "@plasmicapp/cli" "^0.1.166"
     "@sentry/node" "^6.2.2"
