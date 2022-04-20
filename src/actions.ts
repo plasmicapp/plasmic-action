@@ -81,6 +81,7 @@ export class PlasmicAction {
     const isNewApp = !existsSync(path.join(this.opts.cwd, "package.json"));
     if (!isNewApp) {
       console.log("Detected existing app. Moving forward...");
+      await this.updateDependencies();
       return false;
     }
 
@@ -123,6 +124,17 @@ export class PlasmicAction {
     return await this.commit(this.args.branch);
   }
 
+  async updateDependencies(): Promise<void> {
+    const pm = mkPackageManagerCmds(this.opts.cwd);
+    if (this.args.scheme === "loader") {
+      console.log("Updating dependencies.");
+      const platform = this.detectPlatform();
+      if (platform) {
+        await exec(`${pm.add} @plasmicapp/loader-${platform}`, this.opts);
+      }
+    }
+  }
+
   /**
    * Syncs a project in the working directory if scheme == "codegen".
    *
@@ -130,17 +142,12 @@ export class PlasmicAction {
    * undefined if no new branch was created.
    */
   async sync(): Promise<string | undefined> {
-    const pm = mkPackageManagerCmds(this.opts.cwd);
     if (this.args.scheme === "loader") {
       console.log("Nothing to sync; scheme is set to 'loader'.");
-      console.log("Updating dependencies.");
-      const platform = this.detectPlatform();
-      if (platform) {
-        await exec(`${pm.add} @plasmicapp/loader-${platform}`, this.opts);
-      }
       return undefined;
     }
 
+    const pm = mkPackageManagerCmds(this.opts.cwd);
     const newBranch =
       this.args.syncAction === "pr"
         ? mkPrBranchName(this.args.branch)
