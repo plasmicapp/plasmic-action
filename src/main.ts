@@ -23,6 +23,7 @@ async function run(): Promise<void> {
       branch: core.getInput("branch"),
       directory: core.getInput("directory"),
       syncAction: core.getInput("sync_action") as SyncAction,
+      localizedStrings: core.getInput("localized_strings"),
       title: core.getInput("title"),
       description: core.getInput("description"),
       skipIfPlasmic: !!core.getInput("skip_if_plasmic"),

@@ -26,6 +26,8 @@ export type PlasmicActionOptions = {
   githubToken: string;
   syncAction: SyncAction;
 
+  localizedStrings: string;
+
   projectId: string;
   projectApiToken: string;
 
@@ -169,6 +171,15 @@ export class PlasmicAction {
       `${pm.cmd} plasmic sync --projects '${this.args.projectId}:${this.args.projectApiToken}' --yes`,
       this.opts
     );
+    const path = this.args.localizedStrings?.replace(/[^\d\w\/_.-]/, "");
+    if (path) {
+      await exec(`rm -f ${path}`, this.opts);
+      await exec(
+        `${pm.cmd} plasmic localization-strings --format po -o ${path} --projects '${this.args.projectId}' --yes`,
+        this.opts
+      );
+      await exec(`git add -f ${path}`, this.opts);
+    }
     return (await this.commit(newBranch || this.args.branch))
       ? newBranch
       : undefined;
