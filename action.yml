@@ -41,6 +41,9 @@ inputs:
   skip_if_plasmic:
     description: "Skip build if last commit was authored by Plasmic"
     required: false
+  localization_strings:
+    description: "File path used to store strings for localization ('locale/en/plasmic_messages.po')"
+    required: false
 outputs:
   synced:
     description: "True if project was synced"

@@ -171,11 +171,12 @@ export class PlasmicAction {
       `${pm.cmd} plasmic sync --projects '${this.args.projectId}:${this.args.projectApiToken}' --yes`,
       this.opts
     );
-    const path = this.args.localizedStrings?.replace(/[^\d\w\/_.-]/, "");
-    if (path) {
+    const localizedStrings = this.args.localizedStrings?.match(/[\w\d\/._-]+\.([\w]+)$/);
+    if (localizedStrings) {
+      const [path, ext] = localizedStrings;  
       await exec(`rm -f ${path}`, this.opts);
       await exec(
-        `${pm.cmd} plasmic localization-strings --format po -o ${path} --projects '${this.args.projectId}' --yes`,
+        `${pm.cmd} plasmic localization-strings --format ${ext} -o ${path} --projects '${this.args.projectId}' --yes`,
         this.opts
       );
       await exec(`git add -f ${path}`, this.opts);
