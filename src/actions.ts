@@ -14,7 +14,7 @@ export type Platform = "nextjs" | "gatsby" | "react" | "";
 export type Language = "js" | "ts" | "";
 export type Scheme = "codegen" | "loader" | "";
 export type SyncAction = "commit" | "pr" | "";
-export type LocalizationStringsFormat = "po" | "json" | "lingui";
+export type LocalizationStringsFormat = "po" | "json" | "lingui" | "";
 
 const gitUserName = "Plasmic Bot";
 const gitUserEmail = "ops+git@plasmic.app";
@@ -177,10 +177,8 @@ export class PlasmicAction {
       /^[\w\d\/._-]+\.([\w]+)$/
     );
     if (localizationStringsPath) {
-      const [
-        path,
-        format = this.args.localizationStringsFormat,
-      ] = localizationStringsPath;
+      const [path, ext] = localizationStringsPath;
+      const format = this.args.localizationStringsFormat || ext;
       await exec(`rm -f ${path}`, this.opts);
       await exec(
         `${pm.cmd} plasmic localization-strings --format ${format} -o ${path} --projects '${this.args.projectId}' --yes`,
