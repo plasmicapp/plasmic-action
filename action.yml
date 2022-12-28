@@ -41,8 +41,11 @@ inputs:
   skip_if_plasmic:
     description: "Skip build if last commit was authored by Plasmic"
     required: false
-  localization_strings:
+  localization_strings_path:
     description: "File path used to store strings for localization ('locale/en/plasmic_messages.po')"
+    required: false
+  localization_strings_format:
+    description: "File format used for localization stings ('po', 'json', 'lingui')"
     required: false
 outputs:
   synced:

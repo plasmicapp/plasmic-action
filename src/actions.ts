@@ -14,6 +14,7 @@ export type Platform = "nextjs" | "gatsby" | "react" | "";
 export type Language = "js" | "ts" | "";
 export type Scheme = "codegen" | "loader" | "";
 export type SyncAction = "commit" | "pr" | "";
+export type LocalizationStringsFormat = "po" | "json" | "lingui";
 
 const gitUserName = "Plasmic Bot";
 const gitUserEmail = "ops+git@plasmic.app";
@@ -26,7 +27,8 @@ export type PlasmicActionOptions = {
   githubToken: string;
   syncAction: SyncAction;
 
-  localizedStrings: string;
+  localizationStringsPath: string;
+  localizationStringsFormat: LocalizationStringsFormat;
 
   projectId: string;
   projectApiToken: string;
@@ -171,12 +173,17 @@ export class PlasmicAction {
       `${pm.cmd} plasmic sync --projects '${this.args.projectId}:${this.args.projectApiToken}' --yes`,
       this.opts
     );
-    const localizedStrings = this.args.localizedStrings?.match(/[\w\d\/._-]+\.([\w]+)$/);
-    if (localizedStrings) {
-      const [path, ext] = localizedStrings;  
+    const localizationStringsPath = this.args.localizationStringsPath?.match(
+      /^[\w\d\/._-]+\.([\w]+)$/
+    );
+    if (localizationStringsPath) {
+      const [
+        path,
+        format = this.args.localizationStringsFormat,
+      ] = localizationStringsPath;
       await exec(`rm -f ${path}`, this.opts);
       await exec(
-        `${pm.cmd} plasmic localization-strings --format ${ext} -o ${path} --projects '${this.args.projectId}' --yes`,
+        `${pm.cmd} plasmic localization-strings --format ${format} -o ${path} --projects '${this.args.projectId}' --yes`,
         this.opts
       );
       await exec(`git add -f ${path}`, this.opts);

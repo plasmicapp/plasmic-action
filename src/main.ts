@@ -6,6 +6,7 @@ import {
   Scheme,
   RunAction,
   PlasmicAction,
+  LocalizationStringsFormat,
 } from "./actions";
 import { initSentry, captureException } from "./sentry";
 import { setOutputs } from "./util";
@@ -23,7 +24,10 @@ async function run(): Promise<void> {
       branch: core.getInput("branch"),
       directory: core.getInput("directory"),
       syncAction: core.getInput("sync_action") as SyncAction,
-      localizedStrings: core.getInput("localized_strings"),
+      localizationStringsPath: core.getInput("localization_strings_path"),
+      localizationStringsFormat: core.getInput(
+        "localization_strings_format"
+      ) as LocalizationStringsFormat,
       title: core.getInput("title"),
       description: core.getInput("description"),
       skipIfPlasmic: !!core.getInput("skip_if_plasmic"),
