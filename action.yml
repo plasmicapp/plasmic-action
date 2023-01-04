@@ -45,7 +45,7 @@ inputs:
     description: "File path used to store strings for localization ('locale/en/plasmic_messages.po')"
     required: false
   localization_strings_format:
-    description: "File format used for localization stings ('po', 'json', 'lingui')"
+    description: "File format used for localization strings ('po', 'json', 'lingui')"
     required: false
 outputs:
   synced:
