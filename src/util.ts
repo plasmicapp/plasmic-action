@@ -23,7 +23,12 @@ export function assertNoSingleQuotes(str: string) {
 }
 
 export function mkPackageManagerCmds(cwd: string): PackageManagerCmds {
-  const useYarn = existsSync(path.join(cwd, "yarn.lock"));
+  // We check both cwd, and the root path (cwd may be a subdir if the user
+  // specified a sub directory within a repo). This is a quick heuristics
+  // for dealing with mono-repos
+  const useYarn =
+    existsSync(path.join(cwd, "yarn.lock")) ||
+    existsSync(path.join(".", "yarn.lock"));
 
   if (useYarn) {
     return {
