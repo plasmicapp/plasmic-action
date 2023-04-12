@@ -33,10 +33,12 @@
     "@sentry/node": "^6.2.5",
     "@sentry/tracing": "^6.2.5",
     "create-plasmic-app": "^0.0.51",
-    "nanoid": "^3.1.22"
+    "nanoid": "^3.1.22",
+    "semver": "^7.4.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",
+    "@types/semver": "^7.3.13",
     "@vercel/ncc": "^0.27.0",
     "js-yaml": "^4.0.0",
     "pre-commit": "^1.2.2",
