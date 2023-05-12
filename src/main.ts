@@ -33,7 +33,7 @@ async function run(): Promise<void> {
     const action = new PlasmicAction(options);
     const outputs = await action.run();
     setOutputs(outputs);
-  } catch (error) {
+  } catch (error: any) {
     captureException(error);
     core.setFailed(error.message || error);
   }

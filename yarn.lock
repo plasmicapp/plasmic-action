@@ -344,10 +344,10 @@
   dependencies:
     "@octokit/openapi-types" "^9.1.1"
 
-"@plasmicapp/cli@^0.1.185":
-  version "0.1.186"
-  resolved "https://registry.yarnpkg.com/@plasmicapp/cli/-/cli-0.1.186.tgz#832076a94d5395df564a9262a2ce8eff385accbe"
-  integrity sha512-+LkJScl9JNK9HhN/xg0j2SOlkm0JwUP7xa+eK8lFYgxB8+KZ6ymmn6yOGYGzkTPGpXcPW3TxxtWhd8hSsXKznw==
+"@plasmicapp/cli@0.1.187":
+  version "0.1.187"
+  resolved "https://registry.yarnpkg.com/@plasmicapp/cli/-/cli-0.1.187.tgz#bb6f695aadabb3da0c5d7ff89fb58b6ca7b90b41"
+  integrity sha512-7fnVmFaFviNN1N/3Cj4+nknERYXicqEqLxtqdGhHQJIKgTk6XFGVCXhBw0dPpExIImXdZVJDt2rR4YIj6K9hNg==
   dependencies:
     "@babel/core" "^7.12.3"
     "@babel/generator" "^7.12.1"
@@ -1038,12 +1038,12 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
-create-plasmic-app@^0.0.51:
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.51.tgz#5a8cbe368ca43df29302c07785430326aaffaaa5"
-  integrity sha512-n7umXih0uEBMLmhAYn8US0S8aNjxC+Tj25r7VG6Uq8JOP30jgkIE45+AFSqe1nyoqvNPF+9mqboI0bGIp3SZFQ==
+create-plasmic-app@^0.0.75:
+  version "0.0.75"
+  resolved "https://registry.yarnpkg.com/create-plasmic-app/-/create-plasmic-app-0.0.75.tgz#9d36d007c2025935be90a100e50e3dacf9ce811b"
+  integrity sha512-0ddMV8w5v0FVIAj5vjpUnkur7SZO8G6MlpmXpNi78twtD+Yv5u45nqffrP9endDqfDWADAofOgbdsKi2ARkwig==
   dependencies:
-    "@plasmicapp/cli" "^0.1.185"
+    "@plasmicapp/cli" "0.1.187"
     "@sentry/node" "^6.2.2"
     chalk "^4.1.0"
     execa "^5.0.0"
