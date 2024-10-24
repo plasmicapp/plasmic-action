@@ -46,7 +46,7 @@ export function mkPackageManagerCmds(cwd: string): PackageManagerCmds {
   return {
     install: "npm install",
     run: "npm run",
-    add: "npm install",
+    add: "npm install --legacy-peer-deps",
     cmd: "npx",
   };
 }
