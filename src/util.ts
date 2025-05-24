@@ -28,11 +28,22 @@ export function mkPackageManagerCmds(cwd: string): PackageManagerCmds {
   // We check both cwd, and the root path (cwd may be a subdir if the user
   // specified a sub directory within a repo). This is a quick heuristics
   // for dealing with mono-repos
-  const useYarn =
-    existsSync(path.join(cwd, "yarn.lock")) ||
-    existsSync(path.join(".", "yarn.lock"));
+  const pnpmLockExists =
+    existsSync(path.join(cwd, "pnpm-lock.yaml")) || existsSync(path.join(".", "pnpm-lock.yaml"));
 
-  if (useYarn) {
+  if (pnpmLockExists) {
+    return {
+      install: "pnpm install",
+      run: "pnpm run",
+      add: "pnpm add",
+      cmd: "pnpm dlx",
+    };
+  }
+
+  const yarnLockExists =
+    existsSync(path.join(cwd, "yarn.lock")) || existsSync(path.join(".", "yarn.lock"));
+
+  if (yarnLockExists) {
     const yarnVersion = execSync(`yarn --version`).toString().trim();
     const is2 = semver.gte(yarnVersion, "2.0.0");
     return {
