@@ -21,6 +21,10 @@ export async function exec(cmd: string, opts: ExecOptions) {
     nodeOpts.timeout = defaultTimeout;
   }
 
+  if (!nodeOpts.encoding) {
+    nodeOpts.encoding = "utf8";
+  }
+
   // If timeout expires we want to kill the process immediately instead of
   // just sending SIGTERM. If we send SIGTERM, the process can keep writing
   // to the directory for a few moments which causes "rm -rf {cwd}" to fail.
@@ -44,5 +48,9 @@ export async function exec(cmd: string, opts: ExecOptions) {
     promise.child.stdin.end();
   }
 
-  return await promise;
+  const result = await promise;
+  return {
+    stdout: result.stdout.toString(),
+    stderr: result.stderr.toString(),
+  };
 }

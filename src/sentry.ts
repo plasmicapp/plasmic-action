@@ -4,8 +4,7 @@ import { PlasmicActionOptions } from "./actions";
 
 export function initSentry(options: PlasmicActionOptions) {
   Sentry.init({
-    dsn:
-      "https://47f3dbc086994a91af9c07df8efad1f2@o328029.ingest.sentry.io/5723395",
+    dsn: "https://47f3dbc086994a91af9c07df8efad1f2@o328029.ingest.sentry.io/5723395",
     defaultIntegrations: false,
   });
 
