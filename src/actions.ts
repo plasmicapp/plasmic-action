@@ -169,7 +169,7 @@ export class PlasmicAction {
     await exec(`${pm.add} @plasmicapp/cli`, this.opts);
     await exec(
       `${pm.cmd} plasmic sync --projects '${this.args.projectId}:${this.args.projectApiToken}' --yes`,
-      this.opts
+      this.opts,
     );
     return (await this.commit(newBranch || this.args.branch))
       ? newBranch
@@ -188,7 +188,7 @@ export class PlasmicAction {
     if (this.args.skipIfPlasmic) {
       const { stdout: authorEmail } = await exec(
         `git log -1 --pretty=format:'%ae'`,
-        this.opts
+        this.opts,
       );
       if (authorEmail.trim() === gitUserEmail) {
         console.log("Skipping; last commit was made by Plasmic.");
@@ -231,7 +231,7 @@ export class PlasmicAction {
   detectPlatform(): Platform {
     const packageJson = readFileSync(
       path.join(this.opts.cwd, "package.json"),
-      "utf8"
+      "utf8",
     );
     const parsedPackageJson = JSON.parse(packageJson);
 
@@ -268,7 +268,7 @@ export class PlasmicAction {
 
     const { stdout: staged } = await exec(
       `git status --untracked-files=no --porcelain`,
-      this.opts
+      this.opts,
     );
     if (!staged.trim()) {
       console.log("Skipping commit; no changes.");
