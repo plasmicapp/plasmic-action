@@ -8,6 +8,7 @@ import {
   PlasmicAction,
 } from "./actions";
 import { initSentry, captureException } from "./sentry";
+import { trackAction } from "./posthog";
 import { setOutputs } from "./util";
 
 async function run(): Promise<void> {
@@ -29,6 +30,7 @@ async function run(): Promise<void> {
     };
 
     initSentry(options);
+    await trackAction(options);
 
     const action = new PlasmicAction(options);
     const outputs = await action.run();
