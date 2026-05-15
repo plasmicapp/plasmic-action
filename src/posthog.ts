@@ -4,7 +4,7 @@ import { PlasmicActionOptions } from "./actions";
 
 const posthogHost = "https://us.i.posthog.com";
 const posthogProjectToken = "phc_eaI1hFsPRIZkmwrXaSGRNDh4H9J3xdh1j9rgNy27NgP";
-const posthogTimeoutMs = 2000;
+const posthogTimeoutMs = 5000;
 
 function withTimeout(ms: number): AbortSignal {
   const controller = new AbortController();
@@ -26,11 +26,12 @@ export async function trackAction(
       },
       body: JSON.stringify({
         api_key: posthogProjectToken,
-        event: "plasmic github action",
-        distinct_id: repository,
+        event: "plasmic_github_action",
+        distinct_id: options.projectId,
         properties: {
           source: "plasmic-action",
           run: options.run,
+          projectId: options.projectId,
           platform: options.platform,
           scheme: options.scheme,
           language: options.language,
